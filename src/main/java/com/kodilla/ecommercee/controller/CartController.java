@@ -22,12 +22,12 @@ public class CartController {
     }
 
     @PutMapping("/add")
-    public String addProduct(@RequestParam int cart, @RequestBody int productId) {
+    public String addProduct(@RequestParam int cart, @RequestParam int productId) {
         return "Item added to cart";
     }
 
     @DeleteMapping("/remove")
-    public String removeProduct(@RequestParam int cart, @RequestBody int productId) {
+    public String removeProduct(@RequestParam int cart, @RequestParam int productId) {
         return "Item removed from cart";
     }
 
