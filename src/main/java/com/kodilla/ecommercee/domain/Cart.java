@@ -1,14 +1,15 @@
 package com.kodilla.ecommercee.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-import java.util.ArrayList;
+
 import java.util.List;
-@Getter
+@Data
 @AllArgsConstructor
 public class Cart {
     private int id;
     private int userId;
-    private final List<Product> products = new ArrayList<>();
+    private String cartId;
+    private List<String> products;
 }
