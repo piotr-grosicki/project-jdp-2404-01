@@ -9,6 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Cart {
     private int id;
-    private int user_id;
+    private int userId;
     private final List<Product> products = new ArrayList<>();
 }

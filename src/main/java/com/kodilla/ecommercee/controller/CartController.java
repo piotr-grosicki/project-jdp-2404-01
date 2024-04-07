@@ -8,31 +8,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/carts")
 public class CartController {
-    private final List<String> cart = new ArrayList<>();
+    private final List<String> cartDto = new ArrayList<>();
 
-    @GetMapping("/getcart")
-    public List<String> getCart() {
-        return cart;
+    @GetMapping("/{cartId}")
+    public List<String> getCart(@PathVariable String cartId) {
+        return cartDto;
     }
 
-    @PostMapping("/add")
-    public String addProduct(@RequestBody String Product) {
-        cart.add(Product);
+    @PutMapping("/add")
+    public String addProduct(@RequestParam int cart, @RequestBody String Product) {
         return "Item added to cart";
     }
 
     @DeleteMapping("/remove")
-    public String removeProduct(@RequestParam String Product) {
-        if (cart.remove(Product)) {
-            return "Item removed from cart";
-        } else {
-            return "Item not found in cart";
-        }
+    public String removeProduct(@RequestParam int cart, @RequestParam String Product) {
+        return "Item removed from cart";
     }
 
-    @PostMapping("/order")
+
+    @PostMapping("/{cartId}")
     public String createOrder() {
-        if (cart.isEmpty()) {
+        if (cartDto.isEmpty()) {
             return "Cannot create order. Cart is empty.";
         } else {
             return "Order created";
