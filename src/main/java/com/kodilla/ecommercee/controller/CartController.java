@@ -11,28 +11,28 @@ import java.util.List;
 public class CartController {
 
     @GetMapping("/{cartId}")
-    public CartDto getCart(@PathVariable String cartId) {
+    public CartDto getCart(@PathVariable int cartId) {
 
         List<String> products = new ArrayList<>();
         products.add("Product 1");
         products.add("Product 2");
         products.add("Product 3");
 
-        return new CartDto(13, 5, "Wz981oP5", products);
+        return new CartDto(13, 5, 965415, products);
     }
 
     @PutMapping("/add")
-    public String addProduct(@RequestParam int productId) {
+    public String addProduct(@RequestParam int cart, @RequestBody int productId) {
         return "Item added to cart";
     }
 
     @DeleteMapping("/remove")
-    public String removeProduct(@RequestParam int productId) {
+    public String removeProduct(@RequestParam int cart, @RequestBody int productId) {
         return "Item removed from cart";
     }
 
     @PostMapping("/{cartId}")
-    public String createOrder(@PathVariable String cartId) {
+    public String createOrder(@PathVariable int cartId) {
         return "Order created";
         }
     }
