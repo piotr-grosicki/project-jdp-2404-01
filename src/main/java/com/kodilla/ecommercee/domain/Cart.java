@@ -3,10 +3,7 @@ package com.kodilla.ecommercee.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 @Data
 @AllArgsConstructor
