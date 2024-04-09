@@ -32,5 +32,4 @@ public class Cart {
             joinColumns = @JoinColumn(name = "CART_ID"),
             inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
     private List<Product> products;
-
 }
