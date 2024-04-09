@@ -1,13 +1,18 @@
 package com.kodilla.ecommercee;
 
+import com.kodilla.ecommercee.domain.Cart;
+import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.User;
 import org.junit.jupiter.api.Test;
 
 
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+
 public class UserTest {
 
     @Test
@@ -45,4 +50,33 @@ public class UserTest {
         //THEN
         assertNotNull(key);
     }
+
+    @Test
+    public void testOrdersConnections() {
+        //GIVEN
+        Order order = mock(Order.class);
+        User user = new User();
+        user.setOrders(new ArrayList<>());
+
+        //WHEN
+        user.getOrders().add(order);
+
+        //THEN
+        assertFalse(user.getOrders().isEmpty());
+        assertTrue(user.getOrders().contains(order));
+    }
+
+    @Test
+    public void testCartConnections() {
+        //GIVEN
+        Cart cart = mock(Cart.class);
+        User user = new User();
+
+        //WHEN
+        user.setCart(cart);
+
+        //THEN
+        assertEquals(cart, user.getCart());
+    }
+
 }
