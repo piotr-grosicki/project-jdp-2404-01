@@ -19,12 +19,9 @@ public class Cart {
     @Column(name = "CART_ID")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private User user;
-
-    @NotNull
-    private LocalDate created;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
