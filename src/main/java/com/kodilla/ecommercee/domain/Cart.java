@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.domain;
 
-<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,7 +11,4 @@ public class Cart {
     private int userId;
     private int cartId;
     private List<String> products;
-=======
-public class Cart {
->>>>>>> 30c4fcb (Add Encje User JDP240401-15)
 }
