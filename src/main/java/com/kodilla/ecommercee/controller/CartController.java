@@ -28,6 +28,5 @@ public class CartController {
     public String createOrder(@PathVariable int cartId) {
         return "Order created";
     }
-
 }
 
