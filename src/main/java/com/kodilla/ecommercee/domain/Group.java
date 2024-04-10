@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
-@Table(name = "GROUPS")
+@Table(name = "GROUP_TABLE")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Group {
@@ -23,10 +23,12 @@ public class Group {
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
-    @OneToMany(targetEntity = Product.class,
-            mappedBy = "group",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    private List<Product> products = new ArrayList<>();
+    //po dodaniu encji w poniższych klasach proszę usunąc komnentarze
+
+//    @OneToMany(targetEntity = Product.class,
+//            mappedBy = "group",
+//            cascade = CascadeType.ALL,
+//            fetch = FetchType.EAGER
+//    )
+//    private List<Product> products = new ArrayList<>();
 }
