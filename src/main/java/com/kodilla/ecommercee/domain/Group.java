@@ -23,12 +23,10 @@ public class Group {
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
-    //po dodaniu encji w poniższych klasach proszę usunąc komnentarze
-
-//    @OneToMany(targetEntity = Product.class,
-//            mappedBy = "group",
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.EAGER
-//    )
-//    private List<Product> products = new ArrayList<>();
+    @OneToMany(targetEntity = Product.class,
+            mappedBy = "group",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    private List<Product> products = new ArrayList<>();
 }
