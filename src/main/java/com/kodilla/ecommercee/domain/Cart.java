@@ -1,10 +1,15 @@
 package com.kodilla.ecommercee.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,10 +19,10 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CART_ID")
-    private int id;
+    private int cartId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @ManyToMany(cascade = {CascadeType.ALL})
@@ -25,5 +30,7 @@ public class Cart {
             name = "JOIN_CART_PRODUCT",
             joinColumns = @JoinColumn(name = "CART_ID"),
             inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
-    private List<Product> products;
+
+    private List<Product> products = new ArrayList<>();
+
 }
