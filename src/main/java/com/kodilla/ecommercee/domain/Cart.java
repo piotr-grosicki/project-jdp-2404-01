@@ -19,7 +19,7 @@ public class Cart {
     @Column(name = "CART_ID")
     private int cartId;
 
-    /*
+
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
@@ -32,6 +32,6 @@ public class Cart {
             inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")}
     )
     private List<Product> productsList = new ArrayList<>();
-    */
+
 
 }
