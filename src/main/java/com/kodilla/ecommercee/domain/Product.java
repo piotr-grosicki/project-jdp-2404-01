@@ -1,16 +1,11 @@
 package com.kodilla.ecommercee.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -28,11 +23,8 @@ public class Product {
     @Column(name = "PRICE")
     private BigDecimal price;
 
-    @Column(name = "GROUP_ID")
-    private int groupId;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID")
     private Group group;
 
     //po dodaniu encji w poniższych klasach proszę usunąc komnentarze
