@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
-@Table(name = "GROUPS")
+@Table(name = "GROUP_TABLE")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Group {
