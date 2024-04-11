@@ -14,6 +14,7 @@ import jakarta.persistence.*;
 @Table(name = "ORDERS")
 public class Order {
 
+
     @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 @Column(name = "id")
