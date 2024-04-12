@@ -19,7 +19,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "USER_ID")
     private int userId;
 
     @Column(name = "USERNAME")
@@ -37,12 +37,12 @@ public class User {
     @Transient
     private String key;
 
-    //po dodaniu encji w poniższych klasach proszę usunąc komnentarze
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Cart cart;
 
+    //po dodaniu encji Order proszę usunąc komnentarz
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Order> orders;
-//
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-//    private Cart cart;
+
 
 }
