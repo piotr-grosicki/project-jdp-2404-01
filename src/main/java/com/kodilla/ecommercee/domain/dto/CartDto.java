@@ -7,9 +7,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CartDto {
-    private int id;
-    private int userId;
     private int cartId;
+    private int userId;
     private List<String> products;
 
 }
