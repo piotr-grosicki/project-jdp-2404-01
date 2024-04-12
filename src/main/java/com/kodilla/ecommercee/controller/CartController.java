@@ -18,7 +18,7 @@ public class CartController {
         products.add("Product 2");
         products.add("Product 3");
 
-        return new CartDto(13, 5, 965415, products);
+        return new CartDto(13, 5, products);
     }
 
     @PutMapping("/add")
