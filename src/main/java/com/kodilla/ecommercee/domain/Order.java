@@ -37,7 +37,7 @@ public class Order {
     @JoinTable(
             name = "ORDER_ITEMS",
             joinColumns = @JoinColumn(name = "ORDER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ITEM_ID")
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID")
     )
     private List<Product> products;
 }
