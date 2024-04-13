@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,26 +17,31 @@ import jakarta.persistence.*;
 @Table(name = "ORDERS")
 public class Order {
 
-//a
     @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name = "id")
-private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private int id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "USER_ID")
     private User user;
 
-    @Column(name = "date_of_order_creation")
-    private String dateOfOrderCreation;
+    @Column(name = "DATE_OF_ORDER_CREATION")
+    private LocalDate dateOfOrderCreation;
 
-    @Column(name = "status", columnDefinition = "ENUM('NEW', 'PROCESSING', 'COMPLETED', 'CANCELLED')")
+    @Column(name = "STATUS", columnDefinition = "ENUM('NEW', 'PROCESSING', 'COMPLETED', 'CANCELLED')")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Column(name = "carts_items_id")
-    private int cartItemsId;
+    @ManyToMany
+    @JoinTable(
+            name = "ORDER_ITEMS",
+            joinColumns = @JoinColumn(name = "ORDER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ITEM_ID")
+    )
+    private List<Product> products;
 }
+
 
 
 
