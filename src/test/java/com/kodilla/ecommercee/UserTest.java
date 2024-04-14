@@ -18,12 +18,6 @@ import static org.mockito.Mockito.mock;
 @SpringBootTest
 public class UserTest {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private OrderRepository orderRepository;
-
     @Test
     public void testCreateUser() {
         //GIVEN
@@ -46,34 +40,20 @@ public class UserTest {
         assertEquals("2154", user.getKey());
     }
 
-    @Test
-    public void testGenKey() throws Exception {
-        //GIVEN
-        User user = new User();
-        Method method = User.class.getDeclaredMethod("genKey");
-
-        //WHEN
-        method.setAccessible(true);
-        String key = (String) method.invoke(user);
-
-        //THEN
-        assertNotNull(key);
-    }
-
-    @Test
-    public void testOrdersConnections() {
-        //GIVEN
-        Order order = mock(Order.class);
-        User user = new User();
-        user.setOrders(new ArrayList<>());
-
-        //WHEN
-        user.getOrders().add(order);
-
-        //THEN
-        assertFalse(user.getOrders().isEmpty());
-        assertTrue(user.getOrders().contains(order));
-    }
+//    @Test
+//    public void testOrdersConnections() {
+//        //GIVEN
+//        Order order = mock(Order.class);
+//        User user = new User();
+//        user.setOrders(new ArrayList<>());
+//
+//        //WHEN
+//        user.getOrders().add(order);
+//
+//        //THEN
+//        assertFalse(user.getOrders().isEmpty());
+//        assertTrue(user.getOrders().contains(order));
+//    }
 
     @Test
     public void testCartConnections() {

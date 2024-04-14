@@ -28,11 +28,8 @@ public class Product {
     @Column(name = "PRICE")
     private BigDecimal price;
 
-    @Column(name = "GROUP_ID")
-    private int groupId;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID")
     private Group group;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
