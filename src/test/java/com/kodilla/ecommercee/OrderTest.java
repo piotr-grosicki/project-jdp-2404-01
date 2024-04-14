@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.kodilla.ecommercee.domain.OrderStatus.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -33,79 +34,77 @@ public class OrderTest {
     @Test
     public void testCreateOrder() {
         //GIVEN
-        User user = new User();
-        List<Product> product = new ArrayList<>();
-        Order order = new Order();
-        order.setId(1);
-        order.setUser(user);
-        order.setDateOfOrderCreation(LocalDate.of(2000, 1, 1));
-        order.setStatus(OrderStatus.NEW);
-        order.setProducts(product);
+        Order order1 = new Order();
+        order1.setId(1);
+        order1.setDateOfOrderCreation(LocalDate.of(2000, 1, 1));
+        order1.setStatus(NEW);
 
         //WHEN
 
         //THEN
-        assertEquals(1, order.getId());
-        assertEquals(OrderStatus.NEW, order.getStatus());
-        assertEquals(LocalDate.of(2000, 1, 1), order.getDateOfOrderCreation());
+        assertEquals(1, order1.getId());
+        assertEquals(NEW, order1.getStatus());
+        assertEquals(LocalDate.of(2000, 1, 1), order1.getDateOfOrderCreation());
 
     }
 
     @Test
-    void testSaveOrder() {
+    public void testSaveOrder() {
         //GIVEN
-        Order order = new Order(1,null,LocalDate.now(),OrderStatus.NEW, null );
+        Order order2 = new Order(1,null,LocalDate.now(), NEW, null );
 
         //WHEN
-        Order savedOrder = orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order2);
 
         //THEN
         assertNotNull(savedOrder);
-        assertEquals(order, savedOrder);
+        assertEquals(order2, savedOrder);
     }
 
     @Test
-    void testFindOrderById() {
+    public void testFindOrderById() {
         //GIVEN
-        Order order = new Order(1,null,LocalDate.now(),OrderStatus.NEW, null );
-        orderRepository.save(order);
+        Order order3 = new Order(21,null,LocalDate.now(),NEW, null );
+        orderRepository.save(order3);
 
         //WHEN
-        Order foundOrderById = orderRepository.findById(1).orElse(null);
+        Optional<Order> foundOrderById = orderRepository.findById(order3.getId());
 
         //THEN
         assertNotNull(foundOrderById);
     }
 
     @Test
-    void testUpdateOrder() {
+    public void testUpdateOrder() {
         //GIVEN
-        Order order = new Order(1,null,LocalDate.now(),OrderStatus.NEW, null );
-        orderRepository.save(order);
-        order.setStatus(OrderStatus.COMPLETED);
+        Order order4 = new Order(1,null,LocalDate.now(), NEW, null );
+        orderRepository.save(order4);
 
         //WHEN
-        orderRepository.save(order);
-        Optional<Order> updatedOrder = orderRepository.findById(1);
+        order4.setStatus(COMPLETED);
+        orderRepository.save(order4);
+        Optional<Order> updatedOrder = orderRepository.findById(order4.getId());
 
         //THEN
         assertTrue(updatedOrder.isPresent());
-        assertEquals(OrderStatus.COMPLETED, updatedOrder.get().getStatus());
+        assertEquals(COMPLETED, updatedOrder.get().getStatus());
     }
 
     @Test
-    void testDeleteOrder() {
+    public void testDeleteOrder() {
         //GIVEN
-        Order order = new Order(1,null,LocalDate.now(),OrderStatus.NEW, null );
-        orderRepository.save(order);
+        Order order5 = new Order(1,null,LocalDate.now(), NEW, null);
+        orderRepository.save(order5);
 
         //WHEN
-        orderRepository.delete(order);
+        orderRepository.deleteById(order5.getId());
+        Optional<Order> delOrder = orderRepository.findById(order5.getId());
 
         //THEN
-        assertFalse(orderRepository.findById(1).isPresent());
-        assertTrue(productRepository.findAllByOrders(order).isEmpty());
-        assertTrue(userRepository.findAllByOrders(order).isEmpty());
+        assertFalse(delOrder.isPresent());
+        assertTrue(productRepository.findAll().isEmpty());
+        assertTrue(userRepository.findAll().isEmpty());
     }
+
 }
 
