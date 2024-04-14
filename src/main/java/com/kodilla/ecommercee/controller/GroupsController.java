@@ -19,6 +19,10 @@ public class GroupsController {
     public void addGroup(@RequestBody GroupDto groupDto) {
     }
 
+    @DeleteMapping(value = "{groupId}")
+    public void deleteGroup(@PathVariable int groupId) {
+    }
+
     @GetMapping(value = "{groupId}")
     public GroupDto getGroupById(@PathVariable int groupId) {
         return new GroupDto(5, "testGroup");

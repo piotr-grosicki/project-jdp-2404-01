@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class Product {
     @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID")
     private Group group;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products", fetch = FetchType.EAGER)
     private List<Cart> carts;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
