@@ -68,7 +68,7 @@ public class OrderTest {
         orderRepository.save(order3);
 
         //WHEN
-        Optional<Order> foundOrderById = orderRepository.findById(order3.getId());
+        Order foundOrderById = orderRepository.findById(order3.getId()).orElse(null);
 
         //THEN
         assertNotNull(foundOrderById);

@@ -4,7 +4,6 @@ import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,51 +25,49 @@ public class UserTest {
     @Autowired
     private OrderRepository orderRepository;
 
-
-
     @Test
     public void testCreateUser() {
         //GIVEN
-        User user1 = new User();
-        user1.setUserId(1);
-        user1.setUsername("Tomasz");
-        user1.setMail("tomasz@tomasz.pl");
-        user1.setBlocked(false);
-        user1.setCreationData(LocalDate.of(2000, 1, 1));
-        user1.setKey("2154");
+        User user = new User();
+        user.setUserId(1);
+        user.setUsername("Tomasz");
+        user.setMail("tomasz@tomasz.pl");
+        user.setBlocked(false);
+        user.setCreationData(LocalDate.of(2000, 1, 1));
+        user.setKey("2154");
 
         //WHEN
 
         //THEN
-        assertEquals(1, user1.getUserId());
-        assertEquals("Tomasz", user1.getUsername());
-        assertEquals("tomasz@tomasz.pl", user1.getMail());
-        assertEquals(false, user1.isBlocked());
-        assertEquals(LocalDate.of(2000, 1, 1), user1.getCreationData());
-        assertEquals("2154", user1.getKey());
+        assertEquals(1, user.getUserId());
+        assertEquals("Tomasz", user.getUsername());
+        assertEquals("tomasz@tomasz.pl", user.getMail());
+        assertEquals(false, user.isBlocked());
+        assertEquals(LocalDate.of(2000, 1, 1), user.getCreationData());
+        assertEquals("2154", user.getKey());
     }
 
     @Test
     public void testSaveUser() {
         //GIVEN
-        User user2 = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
 
         //WHEN
-        User savedUser = userRepository.save(user2);
+        User savedUser = userRepository.save(user);
 
         //THEN
         assertNotNull(savedUser);
-        assertEquals(user2, savedUser);
+        assertEquals(user, savedUser);
     }
 
     @Test
     public void testFindUserById() {
         //GIVEN
-        User user3 = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
-        userRepository.save(user3);
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        userRepository.save(user);
 
         //WHEN
-        User foundUserById = userRepository.findById(user3.getUserId()).orElse(null);
+        User foundUserById = userRepository.findById(1).orElse(null);
 
         //THEN
         assertNotNull(foundUserById);
@@ -79,13 +76,13 @@ public class UserTest {
     @Test
     public void testUpdateUser() {
         //GIVEN
-        User user4 = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
-        userRepository.save(user4);
-        user4.setUsername("testuser_new");
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        userRepository.save(user);
+        user.setUsername("testuser_new");
 
         //WHEN
-        userRepository.save(user4);
-        Optional<User> updatedUser = userRepository.findById(user4.getUserId());
+        userRepository.save(user);
+        Optional<User> updatedUser = userRepository.findById(1);
 
         //THEN
         assertTrue(updatedUser.isPresent());
@@ -93,17 +90,16 @@ public class UserTest {
     }
 
     @Test
-    public void testDeleteUser() {
+    void testDeleteUser() {
         //GIVEN
-        User user5 = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
-        userRepository.save(user5);
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        userRepository.save(user);
 
         //WHEN
-        userRepository.deleteById(user5.getUserId());
-        Optional<User> delUser = userRepository.findById(user5.getUserId());
+        userRepository.deleteById(1);
 
         //THEN
-        assertFalse(delUser.isPresent());
+        assertFalse(userRepository.findById(1).isPresent());
         assertTrue(cartRepository.findAll().isEmpty());
         assertTrue(orderRepository.findAll().isEmpty());
     }
