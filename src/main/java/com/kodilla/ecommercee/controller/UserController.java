@@ -27,8 +27,8 @@ public class UserController {
     public void createUser(@RequestBody UserDto userDto) {
     }
 
-    @DeleteMapping
-    public void deleteUser(@RequestBody int userId) {
+    @DeleteMapping(value = "{userId}")
+    public void deleteUser(@PathVariable int userId) {
     }
 
     @PutMapping

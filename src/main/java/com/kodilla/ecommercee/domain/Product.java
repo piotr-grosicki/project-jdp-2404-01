@@ -35,7 +35,6 @@ public class Product {
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
     private List<Cart> carts;
 
-    //po dodaniu encji w poniższych klasach proszę usunąc komnentarze
-//    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
-//    private List<Order> orders;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
+    private List<Order> orders;
 }

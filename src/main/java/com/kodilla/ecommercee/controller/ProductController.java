@@ -25,8 +25,8 @@ public class ProductController {
     public void createProduct(@RequestBody ProductDto productDto) {
     }
 
-    @DeleteMapping
-    public void deleteProduct(@RequestBody int productId) {
+    @DeleteMapping(value = "{productId}")
+    public void deleteProduct(@PathVariable int productId) {
     }
 
     @PutMapping

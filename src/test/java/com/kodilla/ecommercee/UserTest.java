@@ -1,22 +1,33 @@
 package com.kodilla.ecommercee;
 
-import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.User;
+import com.kodilla.ecommercee.repository.CartRepository;
+import com.kodilla.ecommercee.repository.OrderRepository;
+import com.kodilla.ecommercee.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-import java.lang.reflect.Method;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 public class UserTest {
+
+    @Test
+    public void contextLoads() {
+    }
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Test
     public void testCreateUser() {
@@ -40,32 +51,61 @@ public class UserTest {
         assertEquals("2154", user.getKey());
     }
 
-//    @Test
-//    public void testOrdersConnections() {
-//        //GIVEN
-//        Order order = mock(Order.class);
-//        User user = new User();
-//        user.setOrders(new ArrayList<>());
-//
-//        //WHEN
-//        user.getOrders().add(order);
-//
-//        //THEN
-//        assertFalse(user.getOrders().isEmpty());
-//        assertTrue(user.getOrders().contains(order));
-//    }
-
     @Test
-    public void testCartConnections() {
+    void testSaveUser() {
         //GIVEN
-        Cart cart = mock(Cart.class);
-        User user = new User();
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
 
         //WHEN
-        user.setCart(cart);
+        User savedUser = userRepository.save(user);
 
         //THEN
-        assertEquals(cart, user.getCart());
+        assertNotNull(savedUser);
+        assertEquals(user, savedUser);
     }
 
+    @Test
+    void testFindUserById() {
+        //GIVEN
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        userRepository.save(user);
+
+        //WHEN
+        User foundUserById = userRepository.findById(1).orElse(null);
+
+        //THEN
+        assertNotNull(foundUserById);
+    }
+
+    @Test
+    void testUpdateUser() {
+        //GIVEN
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        userRepository.save(user);
+        user.setUsername("testuser_new");
+
+        //WHEN
+        userRepository.save(user);
+        Optional<User> updatedUser = userRepository.findById(1);
+
+        //THEN
+        assertTrue(updatedUser.isPresent());
+        assertEquals("testuser_new", updatedUser.get().getUsername());
+    }
+
+    @Test
+    void testDeleteUser() {
+        //GIVEN
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        userRepository.save(user);
+
+        //WHEN
+        userRepository.delete(user);
+
+        //THEN
+        assertFalse(userRepository.findById(1).isPresent());
+        assertTrue(cartRepository.findAllByUser(user).isEmpty());
+        assertTrue(orderRepository.findAllByUser(user).isEmpty());
+    }
 }
+

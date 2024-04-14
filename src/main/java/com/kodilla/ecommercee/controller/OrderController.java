@@ -28,8 +28,8 @@ public class OrderController {
     public void deleteOrder(@PathVariable int orderId) {
     }
 
-    @PutMapping(value = "{orderId}")
-    public OrderDto updateOrder(@PathVariable int orderId, @RequestBody OrderDto orderDto) {
-        return orderDto;
+    @PutMapping
+    public OrderDto updateOrder(@RequestBody OrderDto orderDto) {
+        return new OrderDto(2, 1, "2024-04-08", "PENDING", 2);
     }
 }
