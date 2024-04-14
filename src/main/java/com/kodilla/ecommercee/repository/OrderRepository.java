@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.repository;
 
-import com.kodilla.ecommercee.domain.Cart;
+
+import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
@@ -8,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Transactional
 @Repository
-public interface CartRepository extends CrudRepository<Cart, Integer> {
+@Transactional
+public interface OrderRepository extends CrudRepository<Order, Integer> {
 
-    List<Cart> findAllByUser(User user);
+    List<Order> findAllByUser(User user);
 }
