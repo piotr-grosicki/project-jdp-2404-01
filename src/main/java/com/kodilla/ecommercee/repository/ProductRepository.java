@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.repository;
 
 import com.kodilla.ecommercee.domain.Order;
+import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface ProductRepository extends CrudRepository<Product, Integer> {
 
-    List<User> findAllByOrders(Order order);
+    List<Product> findAllByOrders(Order order);
 }

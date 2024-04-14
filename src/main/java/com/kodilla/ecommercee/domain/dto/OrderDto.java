@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.domain.dto;
 
+import com.kodilla.ecommercee.domain.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class OrderDto {
     private int orderId;
     private int userId;
     private String dateOfOrderCreation;
-    private String status;
+    private OrderStatus status;
     private int cartItemsId;
 
 }

@@ -16,10 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class UserTest {
 
-    @Test
-    public void contextLoads() {
-    }
-
     @Autowired
     private UserRepository userRepository;
 
