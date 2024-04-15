@@ -69,7 +69,7 @@ public class GroupTest {
 
     @Test
     public void testDeleteGroup() {
-        // GIVEN
+        // GIVEN f
         Group group = new Group();
         group.setDescription("Test Group");
         Group savedGroup = groupRepository.save(group);

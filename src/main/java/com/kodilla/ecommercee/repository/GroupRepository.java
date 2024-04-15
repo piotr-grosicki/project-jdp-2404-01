@@ -7,5 +7,5 @@ import jakarta.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface GroupRepository extends CrudRepository<Group, Integer> {
+public interface GroupRepository  extends CrudRepository<Group, Integer> {
 }

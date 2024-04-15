@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 @Transactional
 public interface ProductRepository extends CrudRepository<Product, Integer> {
-    List<Product> findAllByGroup(Group savedGroup);
+    List<Product> findAllByGroup(Group savedGroup );
 
     void deleteAllByGroup(Group savedGroup);
 }
