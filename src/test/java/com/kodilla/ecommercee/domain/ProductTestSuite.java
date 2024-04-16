@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 public class ProductTestSuite {
 
-
     @Autowired
     ProductRepository productRepository;
     @Autowired
@@ -29,7 +28,11 @@ public class ProductTestSuite {
     @Autowired
     CartRepository cartRepository;
 
-
+    @AfterEach
+    public void cleanup() {
+        productRepository.deleteAll();
+        groupRepository.deleteAll();
+    }
 
     @Test
     public void testCreateProduct() {
@@ -115,10 +118,5 @@ public class ProductTestSuite {
         assertEquals(2, retrievedProducts.size());
         assertEquals("Test Product1", retrievedProducts.get(0).getName());
         assertEquals("Test Product2", retrievedProducts.get(1).getName());
-    }
-    @AfterEach
-    public void cleanup() {
-        productRepository.deleteAll();
-        groupRepository.deleteAll();
     }
 }

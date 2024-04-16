@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class GroupTest {
 
-
     @Autowired
     private GroupRepository groupRepository;
 
@@ -91,10 +90,11 @@ public class GroupTest {
 //        // Then
 //        assertFalse(deletedProduct.isPresent());
 //    }
+
     @AfterEach
     public void cleanup() {
         productRepository.deleteAll();
+        groupRepository.deleteAll();
 
     }
-
 }
