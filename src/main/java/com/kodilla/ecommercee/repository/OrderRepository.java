@@ -15,4 +15,7 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
 
     List<Order> findAllByUser(User user);
 
+    @Override
+    List<Order> findAll();
+
 }
