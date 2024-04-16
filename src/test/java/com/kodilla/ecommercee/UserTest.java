@@ -4,6 +4,7 @@ import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +30,12 @@ public class UserTest {
     @Autowired
     private OrderRepository orderRepository;
 
+    @AfterEach
+    void cleanup() {
+        userRepository.deleteAll();
+        cartRepository.deleteAll();
+        orderRepository.deleteAll();
+    }
     @Test
     public void testCreateUser() {
         //GIVEN
@@ -71,7 +78,7 @@ public class UserTest {
         userRepository.save(user);
 
         //WHEN
-        User foundUserById = userRepository.findById(1).orElse(null);
+        User foundUserById = userRepository.findById(user.getUserId()).orElse(null);
 
         //THEN
         assertNotNull(foundUserById);
@@ -86,7 +93,7 @@ public class UserTest {
 
         //WHEN
         userRepository.save(user);
-        Optional<User> updatedUser = userRepository.findById(1);
+        Optional<User> updatedUser = userRepository.findById(user.getUserId());
 
         //THEN
         assertTrue(updatedUser.isPresent());
@@ -100,12 +107,14 @@ public class UserTest {
         userRepository.save(user);
 
         //WHEN
-        userRepository.delete(user);
+        userRepository.deleteById((user.getUserId()));
+        Optional<User> delUser = userRepository.findById((user.getUserId()));
+
 
         //THEN
-        assertFalse(userRepository.findById(1).isPresent());
-        assertTrue(cartRepository.findAllByUser(user).isEmpty());
-        assertTrue(orderRepository.findAllByUser(user).isEmpty());
+        assertFalse(delUser.isPresent());
+        assertTrue(cartRepository.findAll().isEmpty());
+        assertTrue(orderRepository.findAll().isEmpty());
     }
 }
 
