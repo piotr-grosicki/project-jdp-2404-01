@@ -38,4 +38,5 @@ public class Product {
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
     private List<Order> orders;
+
 }
