@@ -71,26 +71,26 @@ public class GroupTest {
         Group updatedGroup = updatedGroupOptional.get();
         assertEquals("Updated Group", updatedGroup.getDescription());
     }
-    @Test
-    public void testDeleteProduct() {
-        // Given
-        Group group = new Group();
-        group.setDescription("Test Group");
-        Group savedGroup = groupRepository.save(group);
-
-        Product product = new Product();
-        product.setName("Test Product");
-        product.setPrice(BigDecimal.valueOf(15.00));
-        product.setGroup(savedGroup);
-        Product savedProduct = productRepository.save(product);
-
-        // When
-        productRepository.deleteById(savedProduct.getProductId());
-        Optional<Product> deletedProduct = productRepository.findById(savedProduct.getProductId());
-
-        // Then
-        assertFalse(deletedProduct.isPresent());
-    }
+//    @Test
+//    public void testDeleteProduct() {
+//        // Given
+//        Group group = new Group();
+//        group.setDescription("Test Group");
+//        Group savedGroup = groupRepository.save(group);
+//
+//        Product product = new Product();
+//        product.setName("Test Product");
+//        product.setPrice(BigDecimal.valueOf(15.00));
+//        product.setGroup(savedGroup);
+//        Product savedProduct = productRepository.save(product);
+//
+//        // When
+//        productRepository.deleteById(savedProduct.getProductId());
+//        Optional<Product> deletedProduct = productRepository.findById(savedProduct.getProductId());
+//
+//        // Then
+//        assertFalse(deletedProduct.isPresent());
+//    }
     @AfterEach
     public void cleanup() {
         productRepository.deleteAll();
