@@ -1,10 +1,11 @@
-package com.kodilla.ecommercee.domain;
+package com.kodilla.ecommercee;
 
+import com.kodilla.ecommercee.domain.Group;
+import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.GroupRepository;
 import com.kodilla.ecommercee.repository.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,11 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class ProductTestSuite {
+public class ProductTest {
 
     @Autowired
     ProductRepository productRepository;
@@ -29,9 +29,10 @@ public class ProductTestSuite {
     CartRepository cartRepository;
 
     @AfterEach
-    public void cleanup() {
+    void cleanup() {
         productRepository.deleteAll();
         groupRepository.deleteAll();
+        cartRepository.deleteAll();
     }
 
     @Test
@@ -47,7 +48,7 @@ public class ProductTestSuite {
         assertNotNull(savedGroup);
         assertEquals("Test Product", savedProduct.getName());
         assertEquals(BigDecimal.valueOf(15.00), savedProduct.getPrice());
-        assertEquals(1, savedProduct.getGroup().getGroupId());
+        assertEquals(savedGroup.getGroupId(), savedProduct.getGroup().getGroupId());
     }
 
     @Test
@@ -62,10 +63,10 @@ public class ProductTestSuite {
         Optional<Product> retrievedProduct = productRepository.findById(product.getProductId());
         // Then
         assertNotNull(retrievedProduct);
-        assertEquals(2, retrievedProduct.get().getProductId());
+        assertEquals(product.getProductId(), retrievedProduct.get().getProductId());
         assertEquals("Test Product", retrievedProduct.get().getName());
         assertEquals(BigDecimal.valueOf(15.00).setScale(2, RoundingMode.CEILING), retrievedProduct.get().getPrice());
-        assertEquals(2, group.getGroupId());
+        assertEquals(group.getGroupId(), retrievedProduct.get().getGroup().getGroupId());
     }
 
     @Test
@@ -81,7 +82,7 @@ public class ProductTestSuite {
         Optional<Product> deletedProduct = productRepository.findById(product.getProductId());
         List<Group> groups = groupRepository.findAll();
         // Then
-        Assertions.assertFalse(deletedProduct.isPresent());
+        assertFalse(deletedProduct.isPresent());
         assertEquals(1, groups.size());
     }
 
@@ -96,10 +97,10 @@ public class ProductTestSuite {
         // When
         product.setName("Name after update");
         product.setPrice(BigDecimal.valueOf(10.00));
+        productRepository.save(product);
         Optional<Product> updatedProduct = productRepository.findById(product.getProductId());
         // Then
         assertNotNull(updatedProduct);
-        assertEquals(3, product.getProductId());
         assertEquals("Name after update", product.getName());
         assertEquals(BigDecimal.valueOf(10.00), product.getPrice());
     }
@@ -107,6 +108,8 @@ public class ProductTestSuite {
     @Test
     public void testFindAllProducts() {
         // Given
+        Group group = new Group(1,"Description", new ArrayList<>());
+        groupRepository.save(group);
         List<Product> groupedProducts = new ArrayList<>();
         Product product1 = new Product(1, "Test Product1", BigDecimal.valueOf(15.00).setScale(2, RoundingMode.CEILING), null, null, null);
         Product product2 = new Product(2, "Test Product2", BigDecimal.valueOf(15.00).setScale(2, RoundingMode.CEILING), null, null, null);

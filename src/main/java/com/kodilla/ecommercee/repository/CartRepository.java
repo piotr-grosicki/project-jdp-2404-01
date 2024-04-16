@@ -13,4 +13,7 @@ import java.util.List;
 public interface CartRepository extends CrudRepository<Cart, Integer> {
 
     List<Cart> findAllByUser(User user);
+
+    @Override
+    List<Cart> findAll();
 }
