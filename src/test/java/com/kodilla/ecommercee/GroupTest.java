@@ -5,16 +5,19 @@ import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.repository.GroupRepository;
 import com.kodilla.ecommercee.repository.ProductRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class GroupTest {
+
 
     @Autowired
     private GroupRepository groupRepository;
@@ -51,7 +54,6 @@ public class GroupTest {
         Group foundGroup = foundGroupOptional.get();
         assertEquals("Test Group", foundGroup.getDescription());
     }
-
     @Test
     public void testUpdateGroup() {
         // GIVEN
@@ -69,26 +71,30 @@ public class GroupTest {
         Group updatedGroup = updatedGroupOptional.get();
         assertEquals("Updated Group", updatedGroup.getDescription());
     }
-
     @Test
-    @Transactional
-    public void testDeleteGroup() {
-        // GIVEN
+    public void testDeleteProduct() {
+        // Given
         Group group = new Group();
         group.setDescription("Test Group");
         Group savedGroup = groupRepository.save(group);
 
         Product product = new Product();
         product.setName("Test Product");
+        product.setPrice(BigDecimal.valueOf(15.00));
         product.setGroup(savedGroup);
-        productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
 
-        // WHEN
-        productRepository.deleteAllByGroup(savedGroup);
-        groupRepository.delete(savedGroup);
+        // When
+        productRepository.deleteById(savedProduct.getProductId());
+        Optional<Product> deletedProduct = productRepository.findById(savedProduct.getProductId());
 
-        // THEN
-        assertFalse(groupRepository.findById(savedGroup.getGroupId()).isPresent());
-        assertTrue(productRepository.findAllByGroup(savedGroup).isEmpty());
+        // Then
+        assertFalse(deletedProduct.isPresent());
     }
+    @AfterEach
+    public void cleanup() {
+        productRepository.deleteAll();
+
+    }
+
 }

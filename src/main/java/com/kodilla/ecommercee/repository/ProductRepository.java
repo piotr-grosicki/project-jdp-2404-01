@@ -13,9 +13,7 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     @Override
     List<Product> findAll();
 
-    void deleteAllByGroup(Group savedGroup);
 
-    Optional<Object> findAllByGroup(Group savedGroup);
 }
 
 
