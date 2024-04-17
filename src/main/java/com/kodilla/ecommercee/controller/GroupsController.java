@@ -26,10 +26,9 @@ public class GroupsController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Void> addGroup(@RequestBody GroupDto groupDto) {
+    ResponseEntity<Group> addGroup(@RequestBody GroupDto groupDto) {
         Group group = groupMapper.mapToGroup(groupDto);
-        groupService.saveGroup(group);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(groupService.saveGroup(group));
     }
 
     @DeleteMapping(value = "{groupId}")
@@ -46,7 +45,7 @@ public class GroupsController {
         return ResponseEntity.ok(groupDto);
     }
 
-    @PutMapping
+    @PutMapping(value = "{groupId}")
     public ResponseEntity<GroupDto> updateGroup(@PathVariable int groupId, @RequestBody GroupDto groupDto) {
         Group existingGroup = groupService.getGroupById(groupId)
                 .orElseThrow(() -> new RuntimeException("Group not found by id:" + groupId));
@@ -55,7 +54,7 @@ public class GroupsController {
         updatedGroup.setGroupId(existingGroup.getGroupId());
 
         Group savedGroup = groupService.updateGroup(updatedGroup);
-        GroupDto savedDto = groupMapper.mapToGroupDto(savedGroup);
-        return ResponseEntity.ok(savedDto);
+        GroupDto savedGroupDto = groupMapper.mapToGroupDto(savedGroup);
+        return ResponseEntity.ok(savedGroupDto);
     }
 }
