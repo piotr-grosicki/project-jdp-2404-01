@@ -44,8 +44,10 @@ public class OrderService {
         Order updatedOrder = orderMapper.mapToOrder(orderDto);
         updatedOrder.setId(existingOrder.getId());
 
-        //TODO add error handling after user implementation
         Optional<User> user = userRepository.findById(orderDto.getUserId());
+        if (!user.isPresent()) {
+            throw new RuntimeException("User not found by id: " + orderDto.getUserId());
+        }
 
         user.ifPresent(updatedOrder::setUser);
 
