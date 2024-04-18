@@ -31,7 +31,7 @@ public class User {
     private LocalDate creationData;
 
     @Transient
-    private String key = "1234";
+    private String key;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
@@ -40,5 +40,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
 
-
+    public User(int userId, String username, String mail, boolean blocked, LocalDate creationData) {
+        this.userId = userId;
+        this.username = username;
+        this.mail = mail;
+        this.blocked = blocked;
+        this.creationData = creationData;
+    }
 }

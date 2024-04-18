@@ -15,5 +15,4 @@ public class UserDto {
     private String mail;
     private boolean blocked;
     private LocalDate creationData;
-    private String key;
 }

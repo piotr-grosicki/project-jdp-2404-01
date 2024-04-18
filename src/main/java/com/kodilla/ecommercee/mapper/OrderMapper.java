@@ -21,8 +21,7 @@ public class OrderMapper {
     public OrderDto mapToOrderDto(Order order) {
         return new OrderDto(
                 order.getId(),
-                //TODO to be fixed after user implementation
-                order.getUser() != null ? order.getUser().getUserId(): 0,
+                order.getUser().getUserId(),
                 order.getDateOfOrderCreation(),
                 order.getStatus(),
                 order.getProducts());

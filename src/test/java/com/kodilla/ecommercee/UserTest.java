@@ -61,7 +61,7 @@ public class UserTest {
     @Test
     void testSaveUser() {
         //GIVEN
-        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), null, null, null);
 
         //WHEN
         User savedUser = userRepository.save(user);
@@ -74,7 +74,7 @@ public class UserTest {
     @Test
     void testFindUserById() {
         //GIVEN
-        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), null, null, null);
         userRepository.save(user);
 
         //WHEN
@@ -87,7 +87,7 @@ public class UserTest {
     @Test
     void testUpdateUser() {
         //GIVEN
-        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), null, null, null);
         userRepository.save(user);
         user.setUsername("testuser_new");
 
@@ -103,7 +103,7 @@ public class UserTest {
     @Test
     void testDeleteUser() {
         //GIVEN
-        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), "1234", null, null);
+        User user = new User(1, "testuser", "test@test.com", false, LocalDate.now(), null, null, null);
         userRepository.save(user);
 
         //WHEN
