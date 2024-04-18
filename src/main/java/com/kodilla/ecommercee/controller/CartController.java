@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.dto.CartDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +14,7 @@ public class CartController {
     @GetMapping("/{cartId}")
     public CartDto getCart(@PathVariable int cartId) {
 
-        List<String> products = new ArrayList<>();
-        products.add("Product 1");
-        products.add("Product 2");
-        products.add("Product 3");
-
+        List<Product> products = new ArrayList<>();
         return new CartDto(13, 5, products);
     }
 
