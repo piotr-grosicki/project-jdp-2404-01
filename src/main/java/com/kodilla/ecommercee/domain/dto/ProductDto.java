@@ -1,11 +1,13 @@
 package com.kodilla.ecommercee.domain.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Getter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class ProductDto {
     private int productId;
