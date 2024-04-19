@@ -1,10 +1,7 @@
 package com.kodilla.ecommercee.mapper;
 
 import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.dto.CartDto;
-import com.kodilla.ecommercee.domain.dto.GroupDto;
-import com.kodilla.ecommercee.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
