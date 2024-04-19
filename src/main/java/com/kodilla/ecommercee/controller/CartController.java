@@ -1,35 +1,67 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.dto.CartDto;
+import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.mapper.ProductMapper;
+import com.kodilla.ecommercee.service.CartService;
+import com.kodilla.ecommercee.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/carts")
 public class CartController {
 
-    @GetMapping("/{cartId}")
-    public CartDto getCart(@PathVariable int cartId) {
+    private final CartMapper cartMapper;
+    private final CartService cartService;
 
-        List<Product> products = new ArrayList<>();
-        return new CartDto(13, 5, products);
+    @GetMapping
+    public ResponseEntity<List<CartDto>> getAllCarts() {
+        List<Cart> carts = cartService.getAllCarts();
+        List<CartDto> cartDtos = cartMapper.mapToCartDtoList(carts);
+        return ResponseEntity.ok(cartDtos);
     }
 
-    @PutMapping
-    public String addProduct(@RequestParam int cart, @RequestParam int productId) {
-        return "Item added to cart";
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CartDto> createCart(@RequestBody CartDto cartDto) {
+        Cart cart = cartMapper.mapToCart(cartDto);
+        Cart savedCart = cartService.saveCart(cart);
+        CartDto savedCartDto = cartMapper.mapToCartDto(savedCart);
+        return ResponseEntity.ok(savedCartDto);
     }
 
     @DeleteMapping("{cartId}")
-    public void removeProduct(@PathVariable int cartId) {
+    public ResponseEntity<Void> deleteCart(@PathVariable int cartId) {
+        cartService.deleteCartById(cartId);
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{cartId}")
-    public String createOrder(@PathVariable int cartId) {
-        return "Order created";
-        }
+    @GetMapping("{cartId}")
+    public ResponseEntity<CartDto> getCart(@PathVariable int cartId) {
+        Cart cart = cartService.getCartById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found by id:" + cartId));
+        CartDto cartDto = cartMapper.mapToCartDto(cart);
+        return ResponseEntity.ok(cartDto);
     }
 
+    @PutMapping("{cartId}")
+    public ResponseEntity<CartDto> updateCart(@PathVariable int cartId, @RequestBody CartDto cartDto) {
+        Cart existingCart = cartService.getCartById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found by id:" + cartId));
+
+        Cart updatedCart = cartMapper.mapToCart(cartDto);
+        updatedCart.setCartId(existingCart.getCartId());
+
+        Cart savedCart = cartService.updateCart(updatedCart);
+        CartDto savedCartDto = cartMapper.mapToCartDto(savedCart);
+        return ResponseEntity.ok(savedCartDto);
+    }
+}
