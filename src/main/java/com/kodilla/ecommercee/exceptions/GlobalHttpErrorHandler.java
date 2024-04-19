@@ -11,6 +11,6 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<Object> handleTaskNotFoundException(UserNotFoundException e) {
-        return new ResponseEntity<>("User don`t exit", HttpStatus.BAD_REQUEST );
+        return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST );
     }
 }
