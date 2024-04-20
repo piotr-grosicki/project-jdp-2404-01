@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.dto.CartDto;
+import com.kodilla.ecommercee.exceptions.CartNotFoundException;
 import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -20,44 +21,30 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping
-    public ResponseEntity<List<CartDto>> getAllCarts() {
+    public ResponseEntity<List<CartDto>> getCarts() {
         List<Cart> carts = cartService.getAllCarts();
-        List<CartDto> cartDtos = cartMapper.mapToCartDtoList(carts);
-        return ResponseEntity.ok(cartDtos);
+        return ResponseEntity.ok(cartMapper.mapToCartDtoList(carts));
+    }
+
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartDto> getCartById(@PathVariable int cartId) throws CartNotFoundException {
+        return ResponseEntity.ok(cartMapper.mapToCartDto(cartService.getCartById(cartId)));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CartDto> createCart(@RequestBody CartDto cartDto) {
+    public ResponseEntity<Cart> createCart(@RequestBody CartDto cartDto) {
         Cart cart = cartMapper.mapToCart(cartDto);
-        Cart savedCart = cartService.saveCart(cart);
-        CartDto savedCartDto = cartMapper.mapToCartDto(savedCart);
-        return ResponseEntity.ok(savedCartDto);
+        return ResponseEntity.ok().body(cartService.saveCart(cart, cartDto));
     }
 
-    @DeleteMapping("{cartId}")
+    @DeleteMapping("/{cartId}")
     public ResponseEntity<Void> deleteCart(@PathVariable int cartId) {
-        cartService.deleteCartById(cartId);
-        return ResponseEntity.noContent().build();
+        cartService.deleteCart(cartId);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{cartId}")
-    public ResponseEntity<CartDto> getCart(@PathVariable int cartId) {
-        Cart cart = cartService.getCartById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found by id:" + cartId));
-        CartDto cartDto = cartMapper.mapToCartDto(cart);
-        return ResponseEntity.ok(cartDto);
-    }
-
-    @PutMapping("{cartId}")
-    public ResponseEntity<CartDto> updateCart(@PathVariable int cartId, @RequestBody CartDto cartDto) {
-        Cart existingCart = cartService.getCartById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found by id:" + cartId));
-
-        Cart updatedCart = cartMapper.mapToCart(cartDto);
-        updatedCart.setCartId(existingCart.getCartId());
-
-        Cart savedCart = cartService.updateCart(updatedCart);
-        CartDto savedCartDto = cartMapper.mapToCartDto(savedCart);
-        return ResponseEntity.ok(savedCartDto);
+    @PutMapping("/{cartId}")
+    public ResponseEntity<CartDto> updateCart(@PathVariable int cartId, @RequestBody CartDto cartDto) throws CartNotFoundException {
+        return ResponseEntity.ok(cartService.updateCart(cartDto, cartId));
     }
 }

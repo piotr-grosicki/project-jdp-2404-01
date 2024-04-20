@@ -45,7 +45,7 @@ public class OrderService {
         updatedOrder.setId(existingOrder.getId());
 
         Optional<User> user = userRepository.findById(orderDto.getUserId());
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new RuntimeException("User not found by id: " + orderDto.getUserId());
         }
 
