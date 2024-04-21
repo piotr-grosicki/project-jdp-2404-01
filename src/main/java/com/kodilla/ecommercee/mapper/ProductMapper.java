@@ -3,13 +3,14 @@ package com.kodilla.ecommercee.mapper;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.dto.ProductDto;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class ProductMapper {
-
     public Product mapToProduct(ProductDto productDto) {
         return new Product(
                 productDto.getProductId(),
@@ -31,8 +32,8 @@ public class ProductMapper {
     }
 
     public List<ProductDto> mapToProductDtoList(List<Product> productList) {
-        return productList.stream()
+        return !CollectionUtils.isEmpty(productList)? productList.stream()
                 .map(this::mapToProductDto)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()): new ArrayList<>();
     }
 }

@@ -23,7 +23,7 @@ public class Cart {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "CART_PRODUCT",
             joinColumns = @JoinColumn(name = "CART_ID"),
             inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))

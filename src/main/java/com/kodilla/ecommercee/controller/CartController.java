@@ -1,8 +1,9 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.dto.CartDto;
 import com.kodilla.ecommercee.exceptions.CartNotFoundException;
+import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
+import com.kodilla.ecommercee.exceptions.UserNotFoundException;
 import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,7 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<List<CartDto>> getCarts() {
-        List<Cart> carts = cartService.getAllCarts();
-        return ResponseEntity.ok(cartMapper.mapToCartDtoList(carts));
+        return ResponseEntity.ok(cartMapper.mapToCartDtoList(cartService.getAllCarts()));
     }
 
     @GetMapping("/{cartId}")
@@ -32,9 +32,8 @@ public class CartController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cart> createCart(@RequestBody CartDto cartDto) {
-        Cart cart = cartMapper.mapToCart(cartDto);
-        return ResponseEntity.ok().body(cartService.saveCart(cart, cartDto));
+    public ResponseEntity<CartDto> createCart(@RequestBody CartDto cartDto) throws UserNotFoundException {
+        return ResponseEntity.ok().body(cartMapper.mapToCartDto(cartService.saveCart(cartDto)));
     }
 
     @DeleteMapping("/{cartId}")
@@ -44,7 +43,14 @@ public class CartController {
     }
 
     @PutMapping("/{cartId}")
-    public ResponseEntity<CartDto> updateCart(@PathVariable int cartId, @RequestBody CartDto cartDto) throws CartNotFoundException {
+    public ResponseEntity<CartDto> updateCart(@PathVariable int cartId, @RequestBody CartDto cartDto)
+            throws CartNotFoundException, UserNotFoundException {
         return ResponseEntity.ok(cartService.updateCart(cartDto, cartId));
+    }
+
+    @PostMapping("/{cartId}")
+    public ResponseEntity<CartDto> addProductToCart(@PathVariable int cartId, @RequestParam int productId)
+            throws CartNotFoundException, ProductNotFoundException {
+        return ResponseEntity.ok(cartService.addProductToCart(cartId, productId));
     }
 }

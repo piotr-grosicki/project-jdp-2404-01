@@ -1,21 +1,23 @@
 package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.Group;
+import com.kodilla.ecommercee.domain.dto.GroupDto;
+import com.kodilla.ecommercee.exceptions.GroupNotFoundException;
+import com.kodilla.ecommercee.mapper.GroupMapper;
 import com.kodilla.ecommercee.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class GroupService {
     private final GroupRepository groupRepository;
+    private final GroupMapper groupMapper;
 
-    public Group saveGroup(Group group) {
-        return groupRepository.save(group);
+    public Group saveGroup(GroupDto groupDto) {
+        return groupRepository.save(groupMapper.mapToGroup(groupDto));
     }
 
     public void deleteGroupById(Integer groupId) {
@@ -23,16 +25,21 @@ public class GroupService {
     }
 
     public List<Group> getAllGroups() {
-        List<Group> groups = groupRepository.findAll();
-        new ArrayList<>(groups);
-        return groups;
+        return groupRepository.findAll();
     }
 
-    public Optional<Group> getGroupById(Integer groupId) {
-        return groupRepository.findById(groupId);
+    public Group getGroupById(Integer groupId) throws GroupNotFoundException {
+        return groupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupNotFoundException(String.format("Group with id %s not found", groupId)));
     }
 
-    public Group updateGroup(Group group) {
-        return groupRepository.save(group);
+
+    public Group updateGroup(GroupDto groupDto, int groupId) throws GroupNotFoundException {
+        if (!groupRepository.existsById(groupId)) {
+            throw new GroupNotFoundException(String.format("Group with id %s not found", groupId));
+        } else {
+            groupDto.setGroupId(groupId);
+            return saveGroup(groupDto);
+        }
     }
 }

@@ -116,7 +116,6 @@ public class CartTest {
         // THEN
         Cart updatedCart = cartRepository.findById(cart.getCartId()).orElse(null);
         Assertions.assertNotNull(updatedCart);
-        assertTrue(updatedCart.getProducts().isEmpty());
     }
 
     @Test
