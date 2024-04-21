@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.domain.dto.UserDto;
 import com.kodilla.ecommercee.exceptions.UserNotFoundException;
 import com.kodilla.ecommercee.mapper.UserMapper;
@@ -10,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 
 @RestController
@@ -23,8 +22,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getUsers() {
-        List<User> users = userService.getAllUser();
-        return ResponseEntity.ok(userMapper.mapToUserDtoList(users));
+        return ResponseEntity.ok(userMapper.mapToUserDtoList(userService.getAllUser()));
     }
 
     @GetMapping(value = "{userId}")
@@ -33,10 +31,8 @@ public class UserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
-        User user = userMapper.mapToUser(userDto);
-        userService.saveUser(user);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok().body(userMapper.mapToUserDto(userService.saveUser(userDto)));
     }
 
     @DeleteMapping(value = "{userId}")
@@ -45,12 +41,9 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
-        User user = userMapper.mapToUser(userDto);
-        User savedUser = userService.saveUser(user);
-        return ResponseEntity.ok(userMapper.mapToUserDto(savedUser));
+    @PutMapping(value = "{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable int userId) throws UserNotFoundException {
+        return ResponseEntity.ok().body(userMapper.mapToUserDto(userService.updateUser(userDto, userId)));
 
     }
-
 }

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
-
     public Order mapToOrder(OrderDto orderDto) {
         return new Order(
                 orderDto.getOrderId(),
@@ -18,6 +17,7 @@ public class OrderMapper {
                 orderDto.getStatus(),
                 null);
     }
+
     public OrderDto mapToOrderDto(Order order) {
         return new OrderDto(
                 order.getId(),
@@ -26,6 +26,7 @@ public class OrderMapper {
                 order.getStatus(),
                 order.getProducts());
     }
+
     public List<OrderDto> mapToOrderDtoList(final List<Order> orderList) {
         return orderList.stream()
                 .map(this::mapToOrderDto)

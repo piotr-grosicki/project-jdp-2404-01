@@ -1,6 +1,8 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.dto.ProductDto;
+import com.kodilla.ecommercee.exceptions.GroupNotFoundException;
+import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
 import com.kodilla.ecommercee.mapper.ProductMapper;
 import com.kodilla.ecommercee.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -20,34 +22,28 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getProducts() {
-        List<ProductDto> productDtos = productMapper.mapToProductDtoList(productService.getAllProducts());
-        return ResponseEntity.ok().body(productDtos);
+        return ResponseEntity.ok().body(productMapper.mapToProductDtoList(productService.getAllProducts()));
     }
 
     @GetMapping(value = "{productId}")
-    public ResponseEntity<ProductDto> getProduct(@PathVariable int productId) {
-        return productService.getProductById(productId)
-                .map(product -> ResponseEntity.ok().body(productMapper.mapToProductDto(product)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ProductDto> getProduct(@PathVariable int productId) throws ProductNotFoundException {
+        return ResponseEntity.ok(productMapper.mapToProductDto(productService.getProductById(productId)));
     }
 
     @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody ProductDto productDto) {
-        productService.saveProduct(productMapper.mapToProduct(productDto));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) throws GroupNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productMapper.mapToProductDto(productService.saveProduct(productDto)));
     }
 
     @DeleteMapping(value = "{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable int productId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable int productId) throws ProductNotFoundException {
         productService.deleteProductById(productId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "{productId}")
-    public ResponseEntity<Void> updateProduct(@PathVariable int productId, @RequestBody ProductDto productDto) {
-        productService.getProductById(productId).orElseThrow(() -> new RuntimeException("Product not found by id: " + productId));
-        productDto.setProductId(productId);
-        productService.saveProduct(productMapper.mapToProduct(productDto));
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable int productId, @RequestBody ProductDto productDto)
+            throws GroupNotFoundException, ProductNotFoundException {
+        return ResponseEntity.ok(productMapper.mapToProductDto(productService.updateProduct(productDto, productId)));
     }
 }

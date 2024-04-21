@@ -15,11 +15,13 @@ public class GroupMapper {
                 groupDto.getDescription(),
                 null);
     }
+
     public GroupDto mapToGroupDto(Group group) {
         return new GroupDto(
                 group.getGroupId(),
                 group.getDescription());
     }
+
     public List<GroupDto> mapToGroupDtoList(final List<Group> groupList) {
         return groupList.stream()
                 .map(this::mapToGroupDto)

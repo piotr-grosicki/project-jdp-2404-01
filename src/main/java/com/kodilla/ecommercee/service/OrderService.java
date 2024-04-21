@@ -3,13 +3,13 @@ package com.kodilla.ecommercee.service;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.domain.dto.OrderDto;
+import com.kodilla.ecommercee.exceptions.OrderNotFoundException;
 import com.kodilla.ecommercee.mapper.OrderMapper;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,39 +20,42 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final UserRepository userRepository;
 
-    public Order saveOrder(Order order) {
-        return orderRepository.save(order);
+    public Order saveOrder(OrderDto orderDto) {
+        return orderRepository.save(orderMapper.mapToOrder(orderDto));
     }
 
-    public void deleteOrder(Integer orderId) {
-        orderRepository.deleteById(orderId);
+    public void deleteOrder(Integer orderId) throws OrderNotFoundException {
+        if (orderRepository.existsById(orderId)) {
+            orderRepository.deleteById(orderId);
+        } else {
+            throw new OrderNotFoundException(String.format("Order with id %s not found", orderId));
+        }
     }
 
     public List<Order> getAllOrders() {
-        List<Order> orders = orderRepository.findAll();
-        new ArrayList<>(orders);
-        return orders;
+        return orderRepository.findAll();
     }
 
-    public Optional<Order> getOrderById(Integer orderId) {
-        return orderRepository.findById(orderId);
+    public Order getOrderById(Integer orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException(String.format("Order with id %s not found", orderId)));
     }
 
-    public OrderDto updateOrder(OrderDto orderDto, int orderId) {
-        Order existingOrder = getOrderById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found by id: " + orderId));
+    public Order updateOrder(OrderDto orderDto, int orderId) throws OrderNotFoundException {
+        if (!orderRepository.existsById(orderId)) {
+            throw new OrderNotFoundException(String.format("Order with id %s not found", orderId));
+        }
+
         Order updatedOrder = orderMapper.mapToOrder(orderDto);
-        updatedOrder.setId(existingOrder.getId());
+        updatedOrder.setId(orderId);
 
         Optional<User> user = userRepository.findById(orderDto.getUserId());
         if (user.isEmpty()) {
-            throw new RuntimeException("User not found by id: " + orderDto.getUserId());
+            throw new RuntimeException(String.format("User with id %s not found", orderDto.getUserId()));
+        } else {
+            updatedOrder.setUser(user.get());
         }
 
-        user.ifPresent(updatedOrder::setUser);
-
-        Order order = orderRepository.save(updatedOrder);
-
-        return orderMapper.mapToOrderDto(order);
+        return orderRepository.save(updatedOrder);
     }
 }

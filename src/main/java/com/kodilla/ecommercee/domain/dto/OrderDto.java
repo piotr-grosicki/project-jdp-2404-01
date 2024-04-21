@@ -2,7 +2,9 @@ package com.kodilla.ecommercee.domain.dto;
 
 import com.kodilla.ecommercee.domain.OrderStatus;
 import com.kodilla.ecommercee.domain.Product;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
